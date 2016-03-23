@@ -1,10 +1,11 @@
 
-syntax on
-set nocompatible
+syntax on               " 语法高亮    
+set nocompatible        " 不要vim模仿vi模式
+set noswapfile          " 不生成swap文件
 
 filetype off
 
-" Bundles settings
+" Bundles settings, vuble 
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
@@ -25,6 +26,7 @@ Plugin 'kien/rainbow_parentheses.vim'
 Plugin 'uarun/vim-protobuf'
 Plugin 'majutsushi/tagbar'
 Plugin 'vim-scripts/ctags.vim'
+Plugin 'Yggdroot/indentLine'
 "Plugin 'Valloric/YouCompleteMe'
 " colorscheme
 Plugin 'flazz/vim-colorschemes'
@@ -32,11 +34,11 @@ Plugin 'tomasr/molokai'
 
 call vundle#end()
 
-
+set ts=4
 set expandtab
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
 set ignorecase
 set showmatch
 set matchtime=2
@@ -87,8 +89,10 @@ noremap <c-m> :CtrlPBuffer<CR>
 
 set t_Co=256
 
-colorscheme  jellybeans
+colorscheme molokai " jellybeans
 " let g:molokai_original = 1
+
+let g:indentLine_color_term = 239
 
 let g:airline_powerline_fonts=1
 
@@ -138,84 +142,6 @@ autocmd FileType cpp setlocal completeopt-=preview
 autocmd FileType python setlocal completeopt-=preview
 autocmd FileType ruby set tabstop=2 shiftwidth=2 softtabstop=2
 autocmd FileType eruby set tabstop=2 shiftwidth=2 softtabstop=2
-
-if has("gui_running")
-	" set guifont=Ubuntu\ Mono\ derivative\ Powerline\ Regular\ 14
-    set guifont=Fira\ Mono\ 11
-    set cursorline
-    set colorcolumn=0
-
-    " No menu or toolbar
-    set guioptions-=m
-    set guioptions-=T
-    " No scrollbars
-    set guioptions-=L
-    set guioptions-=l
-    set guioptions-=R
-    set guioptions-=r
-    set guioptions-=b
-
-    set guioptions+=a
-    set mousemodel=popup
-
-    " paste via Crtl+Shift+V
-    " nnoremap <silent> <c-s-v> "+gP
-    " inoremap <silent> <c-s-v> <Esc><Right>"+gPi
-endif
-
-
-" Automatic remove trailing whitespaces
-autocmd FileType c,cpp,java,php,ruby,python,erlang,go,rust,sql,sh,html,css,vim autocmd BufWritePre <buffer> :%s/\s\+$//e
-
-" Automatic Insert/Update Header When File Create/Write
-function! s:SetPythonFileHeader()
-	call setline(1, "\# -*- coding: utf-8 -*-")
-	call setline(2, "")
-	call setline(3, "\"\"\"")
-	call setline(4, "Author:        hikari")
-	call setline(5, "Filename:      ".expand("%:t"))
-	call setline(6, "Date created:  ".strftime("%Y-%m-%d %H:%M:%S"))
-	call setline(7, "Description:   ")
-	call setline(8, "")
-	call setline(9, "\"\"\"")
-	call setline(10, "")
-	call setline(11, "")
-	call cursor(11, 1)
-endfunc
-
-
-autocmd BufNewFile *.py call <SID>SetPythonFileHeader()
-
-function! s:SetCHeaderFileHeader()
-	let filename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
-	let headername = "__" . filename . "__"
-	call setline(1, "\#ifndef " . headername)
-	call setline(2, "\#define " . headername)
-	call setline(3, "")
-	call setline(4, "")
-	call setline(5, "")
-	call setline(6, "\#endif // " . headername)
-	call cursor(4, 1)
-endfunc
-
-autocmd BufNewFile *.{h,hpp} call <SID>SetCHeaderFileHeader()
-
-function! s:SetErlangFileHeader()
-	let modulename = substitute(expand("%:t"), "\\.erl", "", "")
-	call setline(1, "%%% @author: hikari")
-	call setline(2, "%%% @doc")
-	call setline(3, "%%%")
-	call setline(4, "%%% @end")
-	call setline(5, "%%% Date created: ".strftime("%Y-%m-%d %H:%M:%S"))
-	call setline(6, "")
-	call setline(7, "")
-	call setline(8, "-module(" . modulename . ")")
-	call setline(9, "")
-	call setline(10, "")
-	call cursor(10, 1)
-endfunc
-
-autocmd BufNewFile *.erl call <SID>SetErlangFileHeader()
 
 " Open new split panes to right and bottom, which feels more natural
 set splitbelow
